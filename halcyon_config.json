@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "name": "Halcyon Expanse",
+    "version": "0.1.0",
+    "current_year": 706,
+    "spec_locked": true
+  },
+  "resonance_wheel": {
+    "order": [
+      "Ember",
+      "Gale",
+      "Hollow",
+      "Tide",
+      "Root",
+      "Iron",
+      "Chorus"
+    ],
+    "adjacency_cost_multipliers": {
+      "0": 1.4,
+      "1": 1.0,
+      "2": 0.8,
+      "3": 0.6
+    }
+  },
+  "actor_stats_schema": {
+    "lattice_charge": {
+      "type": "float",
+      "min": 0,
+      "max": 1000,
+      "default": 500
+    },
+    "resonance_type": {
+      "type": "enum",
+      "values": [
+        "Ember",
+        "Gale",
+        "Hollow",
+        "Tide",
+        "Root",
+        "Iron",
+        "Chorus"
+      ],
+      "immutable_post_spawn": true
+    },
+    "attunement_level": {
+      "type": "int",
+      "min": 1,
+      "max": 10,
+      "default": 1
+    },
+    "lattice_debt": {
+      "type": "float",
+      "min": 0,
+      "default": 0,
+      "accrual_rate": 0.03,
+      "accrual_interval_hours": 1
+    }
+  },
+  "ability_row_schema": {
+    "fields": [
+      "ability_id",
+      "name",
+      "base_lc_cost",
+      "resonance_type",
+      "tier",
+      "description"
+    ],
+    "tier_range": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "star_systems": {
+    "order": [
+      "VeyraPrime",
+      "Ashduin",
+      "TwoRivers",
+      "HollowAnchor",
+      "GalesReach",
+      "IronMeridian",
+      "ChorusDeep",
+      "SaltWastes",
+      "HushMarches"
+    ],
+    "seam_graph_adjacency": {
+      "VeyraPrime": [
+        "Ashduin",
+        "TwoRivers"
+      ],
+      "Ashduin": [
+        "VeyraPrime",
+        "TwoRivers",
+        "HollowAnchor"
+      ],
+      "TwoRivers": [
+        "VeyraPrime",
+        "Ashduin",
+        "GalesReach"
+      ],
+      "HollowAnchor": [
+        "Ashduin",
+        "GalesReach",
+        "IronMeridian"
+      ],
+      "GalesReach": [
+        "TwoRivers",
+        "HollowAnchor",
+        "IronMeridian",
+        "ChorusDeep"
+      ],
+      "IronMeridian": [
+        "HollowAnchor",
+        "GalesReach",
+        "ChorusDeep",
+        "SaltWastes"
+      ],
+      "ChorusDeep": [
+        "GalesReach",
+        "IronMeridian",
+        "SaltWastes",
+        "HushMarches"
+      ],
+      "SaltWastes": [
+        "IronMeridian",
+        "ChorusDeep",
+        "HushMarches"
+      ],
+      "HushMarches": [
+        "ChorusDeep",
+        "SaltWastes"
+      ]
+    },
+    "biome_tags": {
+      "VeyraPrime": [
+        "temperate",
+        "capital",
+        "urban"
+      ],
+      "Ashduin": [
+        "ashfall",
+        "volcanic",
+        "ruins"
+      ],
+      "TwoRivers": [
+        "riverine",
+        "wetlands",
+        "trade"
+      ],
+      "HollowAnchor": [
+        "low_light",
+        "horror",
+        "subterranean"
+      ],
+      "GalesReach": [
+        "zero_g",
+        "floating",
+        "wind"
+      ],
+      "IronMeridian": [
+        "industrial",
+        "zero_g",
+        "forge"
+      ],
+      "ChorusDeep": [
+        "acoustic",
+        "crystalline",
+        "deep"
+      ],
+      "SaltWastes": [
+        "desert",
+        "salt_flat",
+        "barren"
+      ],
+      "HushMarches": [
+        "twilight",
+        "fog",
+        "haunted"
+      ]
+    }
+  },
+  "hollowed_zones_anti_magic": {
+    "Vashti Scar": {
+      "system": "VeyraPrime",
+      "world": "Kethara-Home",
+      "description": "Walled containment, 40km circumference. LC permanently null."
+    },
+    "Grey Reef": {
+      "system": "ChorusDeep",
+      "description": "Anti-magic zone."
+    },
+    "Bare Meridian": {
+      "system": "IronMeridian",
+      "description": "Anti-magic zone."
+    }
+  },
+  "factions": {
+    "Concord Table": {
+      "home": [
+        "VeyraPrime"
+      ],
+      "archetype": "bureaucratic_democracy"
+    },
+    "Ferro Compact": {
+      "home": [
+        "IronMeridian",
+        "SaltWastes"
+      ],
+      "archetype": "industrial_oligarchy"
+    },
+    "Hollow Choir": {
+      "home": [
+        "HollowAnchor"
+      ],
+      "archetype": "mystic_theocracy"
+    },
+    "Gale Syndicate": {
+      "home": [
+        "GalesReach"
+      ],
+      "archetype": "mercantile_guild"
+    },
+    "Ashborn": {
+      "home": [
+        "Ashduin"
+      ],
+      "archetype": "hostile_wilderness"
+    }
+  },
+  "currencies": {
+    "CompactScrip": {
+      "symbol": "CS",
+      "base_exchange_to_LM": 0.85,
+      "fluctuation_pct": 0.15
+    },
+    "LedgerMark": {
+      "symbol": "LM",
+      "base_exchange_to_CS": 1.176,
+      "fluctuation_pct": 0.15
+    }
+  },
+  "rarity_tiers": {
+    "Common": {
+      "color": "white",
+      "border_hex": "#FFFFFF"
+    },
+    "Uncommon": {
+      "color": "green",
+      "border_hex": "#00FF00"
+    },
+    "Rare": {
+      "color": "blue",
+      "border_hex": "#0000FF"
+    },
+    "Legendary": {
+      "color": "gold",
+      "border_hex": "#FFD700"
+    }
+  },
+  "bestiary_row_schema": {
+    "entries": [
+      {
+        "name": "Ash Wraith",
+        "behavior_pattern": "phase_cycle_4s_LC_drain",
+        "threat_tier": 3
+      },
+      {
+        "name": "Ferro Drone",
+        "behavior_pattern": "patrol_loop_shield_burst",
+        "threat_tier": 2
+      },
+      {
+        "name": "Hollow Stalker",
+        "behavior_pattern": "stealth_ambush_LC_leech",
+        "threat_tier": 4
+      },
+      {
+        "name": "Tide Leviathan",
+        "behavior_pattern": "area_pulse_knockback",
+        "threat_tier": 5
+      },
+      {
+        "name": "Chorus Hymnal",
+        "behavior_pattern": "buff_ally_resonance_amplify",
+        "threat_tier": 3
+      },
+      {
+        "name": "Salt Scarab",
+        "behavior_pattern": "swarm_split_on_damage",
+        "threat_tier": 2
+      }
+    ]
+  },
+  "eras_timeline": [
+    {
+      "year": 0,
+      "name": "The Shattering",
+      "description": "Lattice first discovered."
+    },
+    {
+      "year": 187,
+      "name": "First Concord",
+      "description": "Factions form."
+    },
+    {
+      "year": 412,
+      "name": "The Hollowing",
+      "description": "HollowAnchor founded."
+    },
+    {
+      "year": 518,
+      "name": "Vashti Scar Sealed",
+      "description": "Concord Wall built."
+    },
+    {
+      "year": 688,
+      "name": "Hollow Choir Withdrawal",
+      "description": "Choir withdraws from public."
+    },
+    {
+      "year": 706,
+      "name": "Current Era",
+      "description": "Present day."
+    }
+  ]
+}
