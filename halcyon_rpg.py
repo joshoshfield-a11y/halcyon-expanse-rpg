@@ -52,6 +52,18 @@ NEW COMMANDS:
   equip/eq          - View equipped items
   level/xp          - View level and XP progress
   qlog              - View quest log
+  boss/bosses       - View available/defeated bosses
+  spawnboss <id>    - Spawn a boss (debug)
+  craft/crafting    - View available recipes
+  make <recipe>     - Craft an item
+  save [slot]       - Save game (slots 1-5)
+  load [slot]       - Load game
+  saves             - List save files
+  quest/quests      - View active/available quests
+  startquest <id>   - Start a quest
+  equip/eq          - View equipped items
+  level/xp          - View level and XP progress
+  qlog              - View quest log
 """)
 
 

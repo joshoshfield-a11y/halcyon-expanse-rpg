@@ -30,6 +30,9 @@ from halcyon.save_load import SaveManager
 from halcyon.quest import QuestManager, Quest, QuestObjective
 from halcyon.equipment import EquipmentManager, Equipment
 from halcyon.leveling import LevelingSystem
+from halcyon.boss import BossManager
+from halcyon.crafting import CraftingSystem
+
 
 
 from engine2d.tilemap import TileMap, BIOME_TILESETS
@@ -66,6 +69,9 @@ class Game2D:
         self.quest_manager = QuestManager()
         self.equipment_manager = EquipmentManager()
         self.leveling = LevelingSystem()
+        self.boss_manager = BossManager()
+        self.crafting = CraftingSystem()
+
         self.play_time = 0.0
         self.last_save_time = time.time()
 
@@ -232,6 +238,18 @@ class Game2D:
             ey = self.tilemap.rng.randint(10, 55)
             if self.tilemap.is_walkable(ex, ey):
                 self.bestiary.spawn(etype, x=ex, y=ey)
+
+        # Chance to spawn boss in certain systems
+        boss_chance = {"Ashduin": 0.3, "HollowAnchor": 0.4, "IronMeridian": 0.3, 
+                       "ChorusDeep": 0.25, "HushMarches": 0.35}
+        if system_name in boss_chance and self.tilemap.rng.random() < boss_chance[system_name]:
+            available = self.boss_manager.get_available_bosses()
+            if available:
+                boss_id = self.tilemap.rng.choice(available)
+                boss = self.boss_manager.spawn_boss(boss_id, x=32, y=32)
+                if boss:
+                    print(f"\n!!! BOSS ENCOUNTER: {boss.name} - {boss.title} !!!")
+                    print(f"    {boss.intro_text}")
 
         self.combat = CombatSystem(self.ability_system, self.bestiary, self.tilemap)
         self.star_systems.current_system = system_name
