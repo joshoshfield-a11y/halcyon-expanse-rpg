@@ -32,6 +32,9 @@ from halcyon.equipment import EquipmentManager, Equipment
 from halcyon.leveling import LevelingSystem
 from halcyon.boss import BossManager
 from halcyon.crafting import CraftingSystem
+from halcyon.world_events import WorldEventManager
+from halcyon.dialogue import DialogueManager
+from engine2d.sound import SoundManager
 
 
 
@@ -71,6 +74,9 @@ class Game2D:
         self.leveling = LevelingSystem()
         self.boss_manager = BossManager()
         self.crafting = CraftingSystem()
+        self.world_events = WorldEventManager(self.tilemap.rng if self.tilemap else None)
+        self.dialogue_manager = DialogueManager()
+        self.sound_manager = SoundManager(enabled=False)  # Disabled by default, enable if pygame available
 
         self.play_time = 0.0
         self.last_save_time = time.time()
@@ -450,6 +456,14 @@ class Game2D:
         if self.lighting:
             self.lighting.update(self.dt, self.player.x, self.player.y)
 
+        # Update world events
+        self.world_events.update(self.dt, self)
+        
+        # Check random encounters
+        encounter = self.world_events.check_random_encounter(self)
+        if encounter:
+            self.combat_log.append(f"Random encounter: {encounter}")
+        
         # Update economy
         self.economy.update_rates()
 

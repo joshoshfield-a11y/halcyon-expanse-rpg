@@ -56,6 +56,10 @@ NEW COMMANDS:
   spawnboss <id>    - Spawn a boss (debug)
   craft/crafting    - View available recipes
   make <recipe>     - Craft an item
+  time/clock        - Show time of day and weather
+  events/world      - Show active world events
+  talk <npc>        - Talk to an NPC
+  sound             - Sound system info
   save [slot]       - Save game (slots 1-5)
   load [slot]       - Load game
   saves             - List save files
