@@ -42,6 +42,16 @@ ABILITIES:
   1: ember_strike  | 2: gale_dash  | 3: tide_heal
   4: hollow_drain  | 5: iron_shield | 6: root_bind
   7: chorus_blast
+
+NEW COMMANDS:
+  save [slot]       - Save game (slots 1-5)
+  load [slot]       - Load game
+  saves             - List save files
+  quest/quests      - View active/available quests
+  startquest <id>   - Start a quest
+  equip/eq          - View equipped items
+  level/xp          - View level and XP progress
+  qlog              - View quest log
 """)
 
 
@@ -168,6 +178,12 @@ def main():
             print(f"  ENEMIES NEARBY: {s['enemies_nearby']}")
             print(f"  INVENTORY: {s['inventory_count']} items")
             print(f"  CS: {s['cs']:.2f} | LM: {s['lm']:.2f}")
+            if 'level' in s:
+                print(f"  LEVEL: {s['level']}/10 | XP: {s['xp']:.0f}/{s['xp_to_next']:.0f} ({s['xp_progress']:.1f}%)")
+            if 'active_quests' in s:
+                print(f"  QUESTS: {s['active_quests']} active | {s['completed_quests']} completed")
+            if 'play_time' in s:
+                print(f"  PLAY TIME: {s['play_time']/60:.1f} minutes")
             print(f"{'='*50}")
 
         elif action == 'exchange' and len(parts) >= 4:

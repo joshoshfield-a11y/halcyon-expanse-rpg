@@ -26,6 +26,11 @@ from halcyon.economy import Economy
 from halcyon.inventory import Inventory, Item
 from halcyon.bestiary import Bestiary
 from halcyon.codex import Codex
+from halcyon.save_load import SaveManager
+from halcyon.quest import QuestManager, Quest, QuestObjective
+from halcyon.equipment import EquipmentManager, Equipment
+from halcyon.leveling import LevelingSystem
+
 
 from engine2d.tilemap import TileMap, BIOME_TILESETS
 from engine2d.sprite_atlas import ATLAS, AnimatedSprite
@@ -57,6 +62,13 @@ class Game2D:
         self.bestiary = Bestiary()
         self.codex = Codex()
         self.combat = None
+        self.save_manager = SaveManager()
+        self.quest_manager = QuestManager()
+        self.equipment_manager = EquipmentManager()
+        self.leveling = LevelingSystem()
+        self.play_time = 0.0
+        self.last_save_time = time.time()
+
 
         # Graphics
         self.tilemap = None
@@ -127,6 +139,76 @@ class Game2D:
 
         # Check codex
         self.codex.check_triggers(location="VeyraPrime")
+        # Initialize default quests
+        self._init_default_quests()
+
+        # Initialize default equipment
+        self._init_default_equipment()
+
+    def _init_default_quests(self):
+        """Set up starting quests."""
+        tutorial_quest = Quest(
+            quest_id="tutorial_first_steps",
+            name="First Steps",
+            description="Explore the starting area and defeat your first enemy.",
+            giver="Chancellor Isbeth Rowe",
+            faction="Concord Table",
+            difficulty=1,
+            objectives=[
+                QuestObjective("Move 10 steps", "reach", "move", required=10),
+                QuestObjective("Defeat an Ash Wraith", "kill", "Ash Wraith", required=1),
+            ]
+        )
+        self.quest_manager.add_quest(tutorial_quest)
+
+        exploration_quest = Quest(
+            quest_id="explore_ashduin",
+            name="Into the Ash",
+            description="Travel to Ashduin and survive the ashfall.",
+            giver="Warden Nell Achera",
+            faction="Concord Table",
+            difficulty=2,
+            objectives=[
+                QuestObjective("Warp to Ashduin", "reach", "Ashduin", required=1),
+                QuestObjective("Defeat 3 enemies in Ashduin", "kill", "any", required=3),
+            ]
+        )
+        self.quest_manager.add_quest(exploration_quest)
+
+        hollow_quest = Quest(
+            quest_id="enter_vashti_scar",
+            name="The Scar",
+            description="Enter the Vashti Scar and survive without Lattice.",
+            giver="Foreman Dask Ilyrian",
+            faction="Ferro Compact",
+            difficulty=3,
+            objectives=[
+                QuestObjective("Enter Vashti Scar", "reach", "Vashti Scar", required=1),
+                QuestObjective("Survive 30 seconds in the Scar", "reach", "survive_scar", required=30),
+            ]
+        )
+        self.quest_manager.add_quest(hollow_quest)
+
+    def _init_default_equipment(self):
+        """Set up starting equipment templates."""
+        starter_items = [
+            Equipment("rusty_blade", "Rusty Blade", "weapon", "Common",
+                     damage_bonus=5, description="A worn iron blade."),
+            Equipment("tattered_cloak", "Tattered Cloak", "armor", "Common",
+                     defense_bonus=3, description="Offers minimal protection."),
+            Equipment("ember_amulet", "Ember Amulet", "accessory", "Uncommon",
+                     resonance_req="Ember", lc_bonus=50, lc_regen_bonus=2,
+                     description="Warm to the touch."),
+            Equipment("concord_badge", "Concord Badge", "relic", "Rare",
+                     hp_bonus=20, debt_reduction=5,
+                     description="Marks you as a Concord agent."),
+        ]
+        for item in starter_items:
+            # Add to inventory
+            from halcyon.inventory import Item
+            inv_item = Item(item.item_id, item.name, item.rarity, item.slot)
+            self.inventory.add_item(inv_item)
+
 
     def _load_system(self, system_name):
         """Load a star system as a tilemap."""
